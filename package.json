@@ -21,5 +21,9 @@
     "restify": "~2.8.1",
     "multi-config": "git://github.com/jonmorehouse/node-multi-config",
     "appstrap": "git://github.com/jonmorehouse/node-appstrap"
+  },
+  "devDependencies": {
+    "test-bootstrap": "git://github.com/jonmorehouse/node-test-bootstrap",
+    "jasmine-node": "~1.14.3"
   }
 }
