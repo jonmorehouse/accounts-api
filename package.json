@@ -1,0 +1,19 @@
+{
+  "name": "accounts-api",
+  "version": "0.0.0",
+  "description": "Accounts api for beam mobile app",
+  "main": "bin/server.coffee",
+  "scripts": {
+    "test": "cake test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beamio/accounts-api.git"
+  },
+  "author": "Jon Morehouse <morehouseJ09@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/beamio/accounts-api/issues"
+  },
+  "homepage": "https://github.com/beamio/accounts-api"
+}
