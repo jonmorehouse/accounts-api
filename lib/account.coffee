@@ -1,10 +1,10 @@
 
-
 class Account
 
   @constructor: ->
 
     # set up application account
+    # attributes [bid, cid]
   
   @create: (username, emailAddress, password) ->
 

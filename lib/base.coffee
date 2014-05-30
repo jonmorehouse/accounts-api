@@ -1,0 +1,11 @@
+
+class Base
+
+  @constructor: ->
+
+
+
+
+
+  
+
