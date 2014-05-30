@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/beamio/accounts-api/issues"
   },
-  "homepage": "https://github.com/beamio/accounts-api"
+  "homepage": "https://github.com/beamio/accounts-api",
+  "dependencies": {
+    "restify-oauth2": "~4.0.0",
+    "restify": "~2.8.1",
+    "multi-config": "git://github.com/jonmorehouse/node-multi-config",
+    "appstrap": "git://github.com/jonmorehouse/node-appstrap"
+  }
 }
