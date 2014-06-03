@@ -1,3 +1,5 @@
+require "./bootstrap"
+{app} = require "./bootstrap"
 
 class Account
 
@@ -6,9 +8,14 @@ class Account
     # set up application account
     # attributes [bid, cid]
   
-  @create: (username, emailAddress, password) ->
+  # create a new account
+  @create: (username, emailAddress, unencryptedPassword) ->
 
     # create a new account
+    p username
+    p emailAddress
+    p unencryptedPassword
+
 
   @username: (username) ->
   
