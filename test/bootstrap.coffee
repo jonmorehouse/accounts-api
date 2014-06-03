@@ -1,2 +1,2 @@
-# bootstrap test functions here
+module.exports = {}
 

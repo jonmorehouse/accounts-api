@@ -23,7 +23,8 @@
     "appstrap": "git://github.com/jonmorehouse/node-appstrap"
   },
   "devDependencies": {
-    "test-bootstrap": "git://github.com/jonmorehouse/node-test-bootstrap",
-    "jasmine-node": "~1.14.3"
+    "jasmine-node": "~1.14.3",
+    "should": "^4.0.0",
+    "test-bootstrap": "git://github.com/jonmorehouse/node-test-bootstrap"
   }
 }
