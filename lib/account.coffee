@@ -16,12 +16,10 @@ class Account
     p emailAddress
     p unencryptedPassword
 
-
   @username: (username) ->
   
     # returns uid if username exists
     # returns false if not
-
 
   @email: (emailAddress) ->
   

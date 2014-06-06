@@ -6,6 +6,6 @@ task "build", "Build js library", ->
 
 task "test", "Test", ->
 
-  t.tasks.jasmine()
+  t.tasks.jasmine("test")
    
 

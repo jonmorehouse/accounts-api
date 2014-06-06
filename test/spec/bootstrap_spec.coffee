@@ -1,16 +1,29 @@
 t = require 'test-bootstrap'
 b = libRequire 'bootstrap'
-mc = require 'multi-config'
+c = require 'multi-config'
+should = require 'should'
 
 describe "Bootstrap", ->
 
-  describe "Bootstrap setup", ->
+    beforeEach (cb) =>
+      b.setUp (err, @app) =>
+        cb?()
 
-    it "this is for manual testing", (cb) ->
+    afterEach (cb) =>
+      b.tearDown (err) ->
+        cb?()
+
+    it "should properly load configuration", (cb) =>
 
       b.setUp (err, app) ->
+        # now make sure that the relevant keys are set
+        #should.exist c.postgres
+        #should.exist c.redis
+        cb?()
 
-        p mc.etcd.host
+    it "should properly create app", (cb) =>
+
+      b.setUp (err, app) ->
 
         cb?()
 
