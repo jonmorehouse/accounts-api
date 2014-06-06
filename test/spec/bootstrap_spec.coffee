@@ -14,9 +14,3 @@ describe "Bootstrap", ->
 
         cb?()
 
-        
-
-
-
-
-

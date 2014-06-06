@@ -1,6 +1,6 @@
 mc = require 'multi-config'
 app = null
-configNamespace = "accounts-service"
+configNamespace = "accounts_service"
 
 setUp = (cb) ->
 
@@ -8,7 +8,9 @@ setUp = (cb) ->
   mc.env ["ETCD_HOST", "ETCD_PORT"], ->
 
     # now grab the configuration for this application
-    mc.etcd configNamespace, ->
+    mc.etcd configNamespace, (err) ->
+
+      # configuration is now loaded
       cb?()
 
 module.exports = 
