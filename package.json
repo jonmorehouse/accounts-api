@@ -4,6 +4,7 @@
   "description": "Accounts api for beam mobile app",
   "main": "bin/server.coffee",
   "scripts": {
+    "install": "force-dedupe-git-modules",
     "test": "cake test"
   },
   "repository": {

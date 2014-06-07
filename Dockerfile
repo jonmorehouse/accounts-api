@@ -11,10 +11,5 @@ ADD lib /app
 
 # install and setup server
 RUN cd /app && npm install 
-# force symliks for the the global multi-config package. This is an npm package for now ...
-RUN cd /app && force-dedupe-git-modules
-
-
-
 
 
