@@ -3,8 +3,9 @@
 
 ## Hacking
 
+Set up etcd environment locally
 ~~~ bash
-# assume that configuration is managed in docker etcd-seed
+
 $ git clone beamio/docker-etcd
 
 # configuration for this project lives in src/accounts_dev.toml

@@ -7,6 +7,7 @@ describe "Bootstrap", ->
 
     beforeEach (cb) =>
       b.setUp (err, @app) =>
+        should.not.exist err
         cb?()
 
     afterEach (cb) =>
@@ -17,13 +18,16 @@ describe "Bootstrap", ->
 
       b.setUp (err, app) ->
         # now make sure that the relevant keys are set
-        #should.exist c.postgres
-        #should.exist c.redis
+        should.exist c.postgres
+        should.exist c.redis
         cb?()
 
     it "should properly create app", (cb) =>
 
-      b.setUp (err, app) ->
+      should.exist @app
+      p @app
+      cb?()
+      
 
-        cb?()
+    
 

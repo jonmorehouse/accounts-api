@@ -17,10 +17,11 @@
   },
   "homepage": "https://github.com/beamio/accounts-api",
   "dependencies": {
-    "restify-oauth2": "~4.0.0",
-    "restify": "~2.8.1",
+    "appstrap": "git://github.com/jonmorehouse/node-appstrap",
+    "force-dedupe-git-modules": "^0.1.3",
     "multi-config": "git://github.com/jonmorehouse/node-multi-config",
-    "appstrap": "git://github.com/jonmorehouse/node-appstrap"
+    "restify": "~2.8.1",
+    "restify-oauth2": "~4.0.0"
   },
   "devDependencies": {
     "jasmine-node": "~1.14.3",
