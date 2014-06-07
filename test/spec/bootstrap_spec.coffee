@@ -3,29 +3,20 @@ b = libRequire 'bootstrap'
 c = require 'multi-config'
 should = require 'should'
 
-describe "Bootstrap", ->
-
-    beforeEach (cb) =>
-      b.setUp (err, @app) =>
-        should.not.exist err
-        cb?()
-
-    afterEach (cb) =>
-      b.tearDown (err) ->
-        cb?()
+describe "Bootstrap", =>
 
     it "should properly load configuration", (cb) =>
 
-      b.setUp (err, app) ->
-        # now make sure that the relevant keys are set
-        should.exist c.postgres
-        should.exist c.redis
-        cb?()
+      # now make sure that the relevant keys are set
+      should.exist c.postgres
+      should.exist c.redis
+      cb?()
 
     it "should properly create app", (cb) =>
 
-      should.exist @app
-      p @app
+      #should.exist t.app
+      #should.exist t.app.postgres
+      #should.exist t.app.redis
       cb?()
       
 
