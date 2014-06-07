@@ -22,8 +22,8 @@ setUp = (cb) ->
 tearDown = (cb) ->
 
   app.on "close", (_cb) ->
+    # do some closing tasks if needed
     _cb?()
-
   app.close (err) ->
     cb?()
 
@@ -32,10 +32,5 @@ module.exports =
   app: app
   setUp: setUp
   tearDown: tearDown
-
-
-
-
-
 
 
