@@ -11,7 +11,7 @@ clearDatabase = (cb) ->
 
 seedDatabase = (cb) ->
 
-  # create table
+  # create tables for test
   app.postgres.query account.table.create().toQuery().text, (err, res) -> 
 
     should.not.exist err
