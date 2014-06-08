@@ -1,12 +1,20 @@
 should = require 'should'
 b = libRequire 'bootstrap'
+async = require 'async'
 app = null
 account = libRequire "account"
 
 clearDatabase = (cb) ->
 
-  # clear the database
-  app.postgres.query account.table.drop().toQuery().text, (err, res) ->
+  async.parallel [
+    ((cb) ->
+      app.postgres.query account.table.drop().toQuery().text, (err, res) ->
+        cb? err if err?
+        cb?()
+    ),((cb) ->
+      app.redis.send_command "flushall", [], cb
+    )
+  ], (err) ->
     cb?()
 
 seedDatabase = (cb) ->
