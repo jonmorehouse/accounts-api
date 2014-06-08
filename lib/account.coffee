@@ -1,5 +1,37 @@
 require "./bootstrap"
 {app} = require "./bootstrap"
+sql = require 'sql'
+
+# declare table for accounts
+table = sql.Table.define
+  name: "account"
+  columns: [
+    {
+      name: "id"
+      dataType: "uuid"
+      primaryKey: true
+    },
+    {
+      name: "email_address"
+      dataType: "varchar(255)"
+    },
+    {
+      name: "password"
+      dataType: "varchar(255)"
+    },
+    {
+      name: "username"
+      dataType: "varchar(255)"
+    },
+    {
+      name: "signup_date"
+      dataType: "timestamp"
+    },
+    {
+      name: "last_login"
+      dataType: "timestamp"
+    }
+  ]
 
 class Account
 
@@ -37,5 +69,11 @@ class Account
   encryptPassword: (password) ->
 
     # return encrypyted / salted password
+
+
+module.exports =
+
+  Account: Account
+  table: table
 
 
