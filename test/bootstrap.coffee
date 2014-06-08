@@ -1,7 +1,7 @@
 should = require 'should'
 b = libRequire 'bootstrap'
+{app} = libRequire 'bootstrap'
 async = require 'async'
-app = null
 account = libRequire "account"
 
 clearDatabase = (cb) ->
@@ -31,8 +31,6 @@ beforeEach (cb) ->
 
     should.not.exist err
     should.exist _app
-    app = _app
-
     # seed database
     seedDatabase ->
       cb?()
@@ -42,6 +40,5 @@ afterEach (cb) ->
     b.tearDown (err) ->
 
       cb?()
-
 
 

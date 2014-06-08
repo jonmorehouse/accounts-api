@@ -1,6 +1,7 @@
 require "./bootstrap"
-{app} = require "./bootstrap"
+bs = require "./bootstrap"
 sql = require 'sql'
+async = require 'async'
 
 # declare table for accounts
 table = sql.Table.define
@@ -16,7 +17,7 @@ table = sql.Table.define
       dataType: "varchar(255)"
     },
     {
-      name: "password"
+      name: "encrypted_password"
       dataType: "varchar(255)"
     },
     {
@@ -35,40 +36,51 @@ table = sql.Table.define
 
 class Account
 
-  @constructor: ->
+  constructor: (kw, cb) ->
 
-    # set up application account
-    # attributes [bid, cid]
-  
-  # create a new account
-  @create: (username, emailAddress, unencryptedPassword) ->
+    # account should be a new account
 
-    # create a new account
-    p username
-    p emailAddress
-    p unencryptedPassword
+  @create: (kw, cb) ->
+    
+    # find the current username with object
+    @_find kw, (err, obj) ->
 
-  @username: (username) ->
-  
-    # returns uid if username exists
-    # returns false if not
+      cb?()
+      
 
-  @email: (emailAddress) ->
-  
-    # returns uid if emailExists
-    # returns false if not
+  @_find: (kw) ->
 
-  @authenticate: (uid, password) -> 
+    query = table.select(table.star()).from(table)
+    orRequired = false
 
-    # run authentication against database
+    # loop through keys we can find on
+    for index, key in ["emailAddress", "username", "phoneNumber"]
+      if kw[key]?
+        # see if its the second where statement
+        if orRequired
+          query = query.or
+        query = query.where(table[key].equals(kw[key]))
+
+    p query.toQuery().text
+    # now see the number of rows that exist
+    bs.app.postgres.query query.toQuery().text, (err, rows) ->
+
+      p err
+      p rows
+      cb?() 
 
 
-  # private methods
-  getUid: (column, value) -> 
+  _validateEmailAddress: (emailAddress, cb) ->
 
-  encryptPassword: (password) ->
+  _validatePhoneNumber: (phoneNumber, cb) ->
 
-    # return encrypyted / salted password
+  _validatePassword: (password, cb) ->
+
+  _validateUsername: (username, cb) ->
+
+  _hashPassword: (password, cb) ->
+
+
 
 
 module.exports =

@@ -1,9 +1,10 @@
 Appstrap = require 'appstrap'
 mc = require 'multi-config'
-app = null
+extend = require 'extend'
+exports.app = {}
 configNamespace = "accounts_service"
 
-setUp = (cb) ->
+exports.setUp = (cb) ->
 
   # now set up appstrap
   mc.env ["ETCD_HOST", "ETCD_PORT"], ->
@@ -16,21 +17,18 @@ setUp = (cb) ->
 
         # handle results
         cb? err if err
-        app = _app
+      
+        # merge the _app to the normal app to allow for cleaner, easier and guaranteed expected requires
+        extend true, exports.app, _app
+
         cb? err, _app
 
-tearDown = (cb) ->
+exports.tearDown = (cb) ->
 
-  app.on "close", (_cb) ->
+  exports.app.on "close", (_cb) ->
     # do some closing tasks if needed
     _cb?()
-  app.close (err) ->
+  exports.app.close (err) ->
     cb?()
-
-module.exports = 
-
-  app: app
-  setUp: setUp
-  tearDown: tearDown
 
 
