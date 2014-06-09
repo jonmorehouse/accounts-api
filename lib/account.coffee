@@ -2,6 +2,9 @@ require "./bootstrap"
 bs = require "./bootstrap"
 sql = require 'sql'
 async = require 'async'
+v = require 'validator'
+mc = require 'multi-config'
+bcrypt = require 'bcrypt'
 
 # declare table for accounts
 table = sql.Table.define
@@ -38,17 +41,30 @@ class Account
 
   constructor: (kw, cb) ->
 
-    # account should be a new account
 
-  @create: (kw, cb) ->
+  @create: (kw, cb) =>
     
-    # find the current username with object
-    @_find kw, (err, obj) ->
+    @_find kw, (err, obj) =>
+      # make sure account doesn't exist already
+      if obj?
+        return cb new Error "Account exists already" 
 
-      cb?()
-      
+      # need to validate all credentials
+      async.parallel [
+        ((cb) => @_validateEmailAddress kw.emailAddress, cb),
+        ((cb) => @_validatePhoneNumber kw.phoneNumber, cb),
+        ((cb) => @_validatePassword kw.password, cb),
+        ((cb) => @_validateUsername kw.username, cb),
+      ], (err) =>
+        
+        return cb? err if err
 
-  @_find: (kw) ->
+        # hash password and create a new entry
+
+        cb?()
+
+  @_find: (kw, cb) ->
+
 
     query = table.select(table.star()).from(table)
     orRequired = false
@@ -61,26 +77,63 @@ class Account
           query = query.or
         query = query.where(table[key].equals(kw[key]))
 
-    p query.toQuery().text
     # now see the number of rows that exist
-    bs.app.postgres.query query.toQuery().text, (err, rows) ->
+    bs.app.postgres.query query.toQuery().text, (err, res) ->
+      return cb? err if err
+      if res.rows.length == 1
+         return cb null, res.rows[0]
+      return cb err, null
 
-      p err
-      p rows
-      cb?() 
+  @_validateEmailAddress: (emailAddress, cb) ->
 
+    if not typeof emailAddress is "string"
+      return cb new Error "Invalid email address length"
+    if not v.isLength emailAddress, 4, 254
+      return cb new Error "Invalid email address length"
+    if not v.isEmail emailAddress
+      return cb new Error "Invalid email address"
 
-  _validateEmailAddress: (emailAddress, cb) ->
+    cb?()
 
-  _validatePhoneNumber: (phoneNumber, cb) ->
+  @_validatePhoneNumber: (phoneNumber, cb) ->
 
-  _validatePassword: (password, cb) ->
+    phoneNumber = phoneNumber.replace "-", ""
+    if not v.isNumeric phoneNumber
+      return cb new Error "Invalid phone number characters"
+    if not v.isLength phoneNumber, 10
+      return cb new Error "Invalid phone number length"
 
-  _validateUsername: (username, cb) ->
+    cb?()
 
-  _hashPassword: (password, cb) ->
+  @_validatePassword: (password, cb) ->
 
+    if not v.isLength password, 8, 100
+      return cb new Error "Invalid password length"
 
+    cb?()
+
+  @_validateUsername: (username, cb) ->
+    
+    re = /^[a-z,A-Z,\.\'-_]*$/
+    if not v.isLength username, 1, 100
+      return cb new Error "Invalid username length"
+
+    if not username.match re
+      return cb new Error "Invalid characters"
+
+    cb?()
+
+  @_hashPassword: (password, cb) ->
+
+    return cb?()
+    bcrypt.hash password, app.bcryptSalt, (err, hash) ->
+
+      return cb? err if err
+      cb hash
+  
+  @_createAccountId: (cb) ->
+
+    # create new uuid here
 
 
 module.exports =

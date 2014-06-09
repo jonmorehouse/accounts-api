@@ -3,6 +3,17 @@ mc = require 'multi-config'
 extend = require 'extend'
 exports.app = {}
 configNamespace = "accounts_service"
+bcrypt = require 'bcrypt'
+async = require 'async'
+
+_setUp = 
+  bcrypt: (cb) ->
+
+    mc.bcrypt.saltRounds = parseInt mc.bcrypt.saltRounds
+    bcrypt.genSalt mc.bcrypt.saltRounds, (err, salt) ->
+      return cb? err if err
+      exports.app.bcryptSalt = salt
+      cb?()
 
 exports.setUp = (cb) ->
 
@@ -21,7 +32,9 @@ exports.setUp = (cb) ->
         # merge the _app to the normal app to allow for cleaner, easier and guaranteed expected requires
         extend true, exports.app, _app
 
-        cb? err, _app
+        # call all setupMethods 
+        async.parallel (_setUp[key] for key of _setUp), (err) ->
+          return cb? err, _app
 
 exports.tearDown = (cb) ->
 
