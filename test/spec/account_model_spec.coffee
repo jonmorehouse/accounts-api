@@ -10,7 +10,6 @@ describe "Account", ->
       @kw = 
         username: "username"
         password: "password"
-        phoneNumber: "2137401111"
         emailAddress: "email@address.com"
 
       cb?()
@@ -22,4 +21,5 @@ describe "Account", ->
         # now when we use the account.find it should work okay!
 
         cb?()
+
 

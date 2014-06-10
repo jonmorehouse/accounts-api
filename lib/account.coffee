@@ -53,7 +53,6 @@ class Account
       # need to validate all credentials
       async.parallel [
         ((cb) => @_validateEmailAddress kw.emailAddress, cb),
-        ((cb) => @_validatePhoneNumber kw.phoneNumber, cb),
         ((cb) => @_validatePassword kw.password, cb),
         ((cb) => @_validateUsername kw.username, cb),
       ], (err) =>
@@ -94,16 +93,6 @@ class Account
       return cb new Error "Invalid email address length"
     if not v.isEmail emailAddress
       return cb new Error "Invalid email address"
-
-    cb?()
-
-  @_validatePhoneNumber: (phoneNumber, cb) ->
-
-    phoneNumber = phoneNumber.replace "-", ""
-    if not v.isNumeric phoneNumber
-      return cb new Error "Invalid phone number characters"
-    if not v.isLength phoneNumber, 10
-      return cb new Error "Invalid phone number length"
 
     cb?()
 
