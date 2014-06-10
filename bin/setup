@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# this will assume that you manage docker-etcd yourself
+# startup postgresql box
+docker run -d --name="postgresql" \
+  -p 5432:5432 -e USER="test" \
+  -e DB="accounts_service" \
+  -e PASS="test" \
+  -e EXTENSIONS="uuid-ossp" \
+  jonmorehouse/postgresql
+
+# start up docker box for development
+docker run -d --name="redis" \
+  -p 6379:6379 \
+  dockerfile/redis
+
