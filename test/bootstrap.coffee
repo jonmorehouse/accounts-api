@@ -28,7 +28,6 @@ seedDatabase = (cb) ->
 
 beforeEach (cb) ->
   b.setUp (err, _app) ->
-
     should.not.exist err
     should.exist _app
     # seed database

@@ -19,10 +19,7 @@ describe "Account", ->
 
       account.Account.create @kw, (err, acc) =>
 
+        # now when we use the account.find it should work okay!
+
         cb?()
-
-    
-
-
-
 

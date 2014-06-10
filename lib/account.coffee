@@ -44,8 +44,9 @@ class Account
 
   @create: (kw, cb) =>
     
+
+    # make sure required account credentials are not already taken
     @_find kw, (err, obj) =>
-      # make sure account doesn't exist already
       if obj?
         return cb new Error "Account exists already" 
 
@@ -56,15 +57,16 @@ class Account
         ((cb) => @_validatePassword kw.password, cb),
         ((cb) => @_validateUsername kw.username, cb),
       ], (err) =>
-        
         return cb? err if err
 
-        # hash password and create a new entry
+        # hash password and prepare for insert
+        @_hashPassword kw.password, (err, hash) ->
 
-        cb?()
+          return cb? err if err?
+
+          cb?()
 
   @_find: (kw, cb) ->
-
 
     query = table.select(table.star()).from(table)
     orRequired = false
@@ -125,17 +127,11 @@ class Account
 
   @_hashPassword: (password, cb) ->
 
-    return cb?()
-    bcrypt.hash password, app.bcryptSalt, (err, hash) ->
+    bcrypt.hash password, bs.app.bcryptSalt, (err, hash) ->
 
       return cb? err if err
-      cb hash
+      cb null, hash
   
-  @_createAccountId: (cb) ->
-
-    # create new uuid here
-
-
 module.exports =
 
   Account: Account

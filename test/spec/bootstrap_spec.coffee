@@ -8,17 +8,14 @@ describe "Bootstrap", =>
     it "should properly load configuration", (cb) =>
 
       # now make sure that the relevant keys are set
-      #should.exist c.postgres
-      #should.exist c.redis
+      should.exist c.postgres
+      should.exist c.redis
       cb?()
 
     it "should properly create app", (cb) =>
 
-      #should.exist t.app
-      #should.exist t.app.postgres
-      #should.exist t.app.redis
+      should.exist b.app
+      should.exist b.app.postgres
+      should.exist b.app.redis
       cb?()
-      
-
-    
 
