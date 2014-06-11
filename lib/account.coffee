@@ -139,22 +139,21 @@ class Account
       return cb? err if err
       cb null, hash
 
-  @_insertAccount: (obj, cb) ->
+  @_insertAccount: (kw, cb) ->
 
-    columns = (column.name for column in table.columns)
+    columns = (column.property for column in table.columns)
     obj = {}
 
-    # 
     for column in columns
       ((column) ->
         switch column
-          when "id" then obj[column] = "uuid_generate_v4()"
-          else
-            ""
+          when "id" then obj[column] = table.sql.functions.uuid_generate_v4()
+          when "signupDate", "loginDate" then obj[column] = table.sql.functions.now()
+          else obj[column] = kw[column] if kw[column]?
       )(column)
 
     # generate text and insert into datbase
-    query = table.insert(table.id.value((table.sql.functions.uuid_generate_v4())), table.username.value("name")).returning(table.star()).toQuery()
+    query = table.insert(obj).returning(table.star()).toQuery()
     bs.app.postgres.query query, (err, res) ->
       cb? err if err?
       cb? null, res.rows[0]

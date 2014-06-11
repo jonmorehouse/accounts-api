@@ -20,7 +20,7 @@ _setUp =
 
   sql: (cb) ->
 
-    sql.registerFunctions ["uuid_generate_v4"]
+    sql.registerFunctions ["uuid_generate_v4", "now"]
     cb?()
 
 exports.setUp = (cb) ->

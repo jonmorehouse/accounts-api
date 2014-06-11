@@ -15,14 +15,12 @@ describe "Account", ->
 
   describe "new account", =>
 
-
     it "should add a new account to the database", (cb) =>
 
       account.Account.create @kw, (err, acc) =>
 
         should.not.exist err
         should.exist acc
-
         # now when we use the account.find it should work okay!
         cb?()
 
@@ -33,7 +31,21 @@ describe "Account", ->
       account.Account.create @kw, cb
 
     it "should be able to authenticate an existing account", (cb) =>
-
         account.Account.authenticate @kw, (err, acc) =>
 
+          should.not.exist err
+          should.exist acc
           cb?()
+
+    it "should not authenticate with an account with the wrong password", (cb) =>
+
+      @kw.password = "wrong_password"
+      account.Account.authenticate @kw, (err, acc) =>
+
+        should.not.exist acc
+        should.exist err
+        cb?()
+
+
+
+
