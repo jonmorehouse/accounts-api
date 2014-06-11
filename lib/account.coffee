@@ -125,6 +125,7 @@ class Account
     columns = (column.name for column in table.columns)
     obj = {}
 
+    # 
     for column in columns
       ((column) ->
         switch column
@@ -132,6 +133,8 @@ class Account
           else
             ""
       )(column)
+
+    # generate text and make request
     text = table.insert(table.id.value((table.sql.functions.uuid_generate_v4())), table.username.value("name")).toQuery()
     bs.app.postgres.query text, (err, res) ->
 
