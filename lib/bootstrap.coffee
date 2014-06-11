@@ -1,11 +1,13 @@
 Appstrap = require 'appstrap'
 mc = require 'multi-config'
 extend = require 'extend'
-exports.app = {}
-configNamespace = "accounts_service"
 bcrypt = require 'bcrypt'
 async = require 'async'
 sql = require 'sql'
+
+# application wide variables
+exports.app = {}
+configNamespace = "accounts_service"
 
 _setUp = 
   bcrypt: (cb) ->

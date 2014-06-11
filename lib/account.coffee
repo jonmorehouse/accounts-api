@@ -18,10 +18,12 @@ table = sql.Table.define
     {
       name: "email_address"
       dataType: "varchar(255)"
+      property: "emailAddress"
     },
     {
       name: "encrypted_password"
       dataType: "varchar(255)"
+      property: "encryptedPassword"
     },
     {
       name: "username"
@@ -30,16 +32,33 @@ table = sql.Table.define
     {
       name: "signup_date"
       dataType: "timestamp"
+      property: "signupDate"
     },
     {
       name: "last_login"
       dataType: "timestamp"
+      property: "loginDate"
     }
   ]
 
 class Account
 
-  constructor: (kw, cb) ->
+  @authenticate: (kw, cb) =>
+
+    if not kw.password? and not kw.username? or not kw.emailAddress? 
+      return new Error "Missing parameters"
+
+    @_hashPassword kw.password, (err, hash) =>
+      return cb? err if err
+    
+      key = if kw.username? then "username" else if kw.emailAddress? then "emailAddress"
+      query = table.where(table[key].equals(kw[key])).and(table.encryptedPassword.equals(hash)).toQuery()
+
+      # make proper query and return to the caller
+      bs.app.postgres.query query, (err, res) ->
+        return cb? err if err
+        return cb? new Error "Unable to authenticate" if res.rows.length != 1 
+        return cb? null, res.rows[0]
 
   @create: (kw, cb) =>
     
@@ -58,11 +77,11 @@ class Account
 
         # hash password and prepare for insert
         @_hashPassword kw.password, (err, hash) =>
-
           return cb? err if err?
           kw.encryptedPassword = hash
-          @_insertAccount kw, (err, acc) ->
-            cb?()
+          @_insertAccount kw, (err, account) ->
+            cb? err if err?
+            cb null, account
 
   @_find: (kw, cb) ->
 
@@ -70,7 +89,7 @@ class Account
     orRequired = false
 
     # loop through keys we can find on
-    for index, key in ["emailAddress", "username", "phoneNumber"]
+    for index, key in ["emailAddress", "username", "encryptedPassword"]
       if kw[key]?
         # see if its the second where statement
         if orRequired
@@ -134,15 +153,13 @@ class Account
             ""
       )(column)
 
-    # generate text and make request
-    text = table.insert(table.id.value((table.sql.functions.uuid_generate_v4())), table.username.value("name")).toQuery()
-    bs.app.postgres.query text, (err, res) ->
-
+    # generate text and insert into datbase
+    query = table.insert(table.id.value((table.sql.functions.uuid_generate_v4())), table.username.value("name")).returning(table.star()).toQuery()
+    bs.app.postgres.query query, (err, res) ->
       cb? err if err?
-      cb?() 
+      cb? null, res.rows[0]
 
 module.exports =
   Account: Account
   table: table
-
 
