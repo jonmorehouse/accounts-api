@@ -23,6 +23,7 @@
     "coffee-script": "^1.7.1",
     "extend": "^1.2.1",
     "force-dedupe-git-modules": "^0.1.3",
+    "mocha": "^1.20.1",
     "multi-config": "jonmorehouse/node-multi-config",
     "restify": "~2.8.1",
     "restify-oauth2": "~4.0.0",
@@ -31,9 +32,11 @@
     "validator": "^3.14.1"
   },
   "devDependencies": {
+    "chai": "^1.9.1",
     "jasmine-before-all": "^0.1.0",
     "jasmine-node": "~1.14.3",
-    "should": "^4.0.0",
+    "mocha": "^1.20.1",
+    "should": "^4.0.4",
     "test-bootstrap": "jonmorehouse/node-test-bootstrap"
   }
 }

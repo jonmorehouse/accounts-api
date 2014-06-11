@@ -1,7 +1,10 @@
+mc = require 'multi-config'
 t = require 'test-bootstrap'
 
-task "test", "Test", ->
+option "-p", "--filepath [filepath]", "filepath or directory"
+task "test", "Run mocha specs for project or a particular file", (options) ->
 
-  t.tasks.jasmine("test")
-   
+  filepath = options.filepath ?= "test/spec"
+  t.tasks.mocha filepath
+
 

@@ -1,6 +1,6 @@
-require 'should'
 t = require 'test-bootstrap'
 account = libRequire 'account'
+should = require 'should'
 
 describe "Account", ->
   describe "new account", ->

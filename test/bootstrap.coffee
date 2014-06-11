@@ -1,9 +1,8 @@
-should = require 'should'
 b = libRequire 'bootstrap'
 {app} = libRequire 'bootstrap'
 async = require 'async'
 account = libRequire "account"
-require 'jasmine-before-all'
+should = require 'should'
 
 clearDatabase = (cb) ->
 
@@ -26,14 +25,17 @@ seedDatabase = (cb) ->
     should.exist res
     cb?()
 
-beforeEach (cb) ->
+before (cb) ->
   b.setUp (err, _app) ->
     should.not.exist err
     should.exist _app
-    seedDatabase cb
+    cb?()
 
-afterEach (cb) ->
-    clearDatabase ->
-      b.tearDown (err) ->
-        cb?()
+after (cb) ->
+  p "After"
+  b.tearDown (err) ->
+    cb?()
+
+beforeEach seedDatabase
+afterEach clearDatabase
 
