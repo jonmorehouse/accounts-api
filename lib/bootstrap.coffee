@@ -26,11 +26,9 @@ _setUp =
 
 exports.setUp = (cb) ->
 
-  t.benchmark.start "start"
   # now set up appstrap
   mc.env ["ETCD_HOST", "ETCD_PORT"], ->
 
-    t.benchmark.stop "start"
     # now grab the configuration for this application
     mc.etcd configNamespace, {namespace: false}, (err) ->
 

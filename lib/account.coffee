@@ -1,3 +1,4 @@
+t = require 'test-bootstrap'
 require "./bootstrap"
 bs = require "./bootstrap"
 sql = require 'sql'
@@ -40,6 +41,7 @@ table = sql.Table.define
       property: "loginDate"
     }
   ]
+
 
 class Account
 
