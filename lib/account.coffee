@@ -63,7 +63,7 @@ class Account
   @create: (kw, cb) =>
     
     # make sure required account credentials are not already taken
-    @_find kw, (err, obj) =>
+    @find kw, (err, obj) =>
       if obj?
         return cb new Error "Account exists already" 
 
@@ -83,7 +83,7 @@ class Account
             cb? err if err?
             cb null, account
 
-  @_find: (kw, cb) ->
+  @find: (kw, cb) ->
 
     query = table.select(table.star()).from(table)
     orRequired = false

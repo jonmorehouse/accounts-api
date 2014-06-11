@@ -3,6 +3,7 @@ b = libRequire 'bootstrap'
 async = require 'async'
 account = libRequire "account"
 should = require 'should'
+t = require 'test-bootstrap'
 
 clearDatabase = (cb) ->
 
@@ -26,14 +27,15 @@ seedDatabase = (cb) ->
     cb?()
 
 before (cb) ->
+  t.benchmark.start "suite"
   b.setUp (err, _app) ->
     should.not.exist err
     should.exist _app
     cb?()
 
 after (cb) ->
-  p "After"
   b.tearDown (err) ->
+    t.benchmark.stop "suite"
     cb?()
 
 beforeEach seedDatabase

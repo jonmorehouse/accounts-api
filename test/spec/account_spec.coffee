@@ -24,6 +24,18 @@ describe "Account", ->
         # now when we use the account.find it should work okay!
         cb?()
 
+    it "should create a full account, autofilling some of the other credentials", (cb) =>
+
+      account.Account.create @kw, (err, acc) =>
+        account.Account.find @kw, (err, acc) =>
+
+          should.not.exist err
+          should.exist acc
+          should.exist acc.username
+          should.exist acc.emailAddress
+          should.exist acc.signupDate
+          should.exist acc.loginDate
+          cb?()
 
   describe "authentication", =>
 
