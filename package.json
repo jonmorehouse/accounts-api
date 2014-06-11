@@ -26,11 +26,12 @@
     "multi-config": "jonmorehouse/node-multi-config",
     "restify": "~2.8.1",
     "restify-oauth2": "~4.0.0",
-    "sql": "^0.39.0",
+    "sql": "jonmorehouse/node-sql",
     "uuid": "^1.4.1",
     "validator": "^3.14.1"
   },
   "devDependencies": {
+    "jasmine-before-all": "^0.1.0",
     "jasmine-node": "~1.14.3",
     "should": "^4.0.0",
     "test-bootstrap": "jonmorehouse/node-test-bootstrap"

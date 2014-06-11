@@ -41,10 +41,8 @@ class Account
 
   constructor: (kw, cb) ->
 
-
   @create: (kw, cb) =>
     
-
     # make sure required account credentials are not already taken
     @_find kw, (err, obj) =>
       if obj?
@@ -59,11 +57,12 @@ class Account
         return cb? err if err
 
         # hash password and prepare for insert
-        @_hashPassword kw.password, (err, hash) ->
+        @_hashPassword kw.password, (err, hash) =>
 
           return cb? err if err?
-
-          cb?()
+          kw.encryptedPassword = hash
+          @_insertAccount kw, (err, acc) ->
+            cb?()
 
   @_find: (kw, cb) ->
 
@@ -120,9 +119,26 @@ class Account
 
       return cb? err if err
       cb null, hash
-  
-module.exports =
 
+  @_insertAccount: (obj, cb) ->
+
+    columns = (column.name for column in table.columns)
+    obj = {}
+
+    for column in columns
+      ((column) ->
+        switch column
+          when "id" then obj[column] = "uuid_generate_v4()"
+          else
+            ""
+      )(column)
+    text = table.insert(table.id.value((table.sql.functions.uuid_generate_v4())), table.username.value("name")).toQuery()
+    bs.app.postgres.query text, (err, res) ->
+
+      cb? err if err?
+      cb?() 
+
+module.exports =
   Account: Account
   table: table
 

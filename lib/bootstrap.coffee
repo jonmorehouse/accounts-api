@@ -5,6 +5,7 @@ exports.app = {}
 configNamespace = "accounts_service"
 bcrypt = require 'bcrypt'
 async = require 'async'
+sql = require 'sql'
 
 _setUp = 
   bcrypt: (cb) ->
@@ -14,6 +15,11 @@ _setUp =
       return cb? err if err
       exports.app.bcryptSalt = salt
       cb?()
+
+  sql: (cb) ->
+
+    sql.registerFunctions ["uuid_generate_v4"]
+    cb?()
 
 exports.setUp = (cb) ->
 
