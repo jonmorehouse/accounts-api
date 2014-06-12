@@ -1,4 +1,3 @@
-mc = require 'multi-config'
 t = require 'test-bootstrap'
 
 option "-p", "--filepath [filepath]", "filepath or directory"

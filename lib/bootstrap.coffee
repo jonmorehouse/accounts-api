@@ -4,7 +4,7 @@ extend = require 'extend'
 bcrypt = require 'bcrypt'
 async = require 'async'
 sql = require 'sql'
-restify = require 'restify'
+server = require "./server"
 
 # application wide variables
 exports.app = {}
@@ -25,18 +25,11 @@ _setUp =
     cb?()
 
   server: (cb) ->
+    server.setUp exports.app, cb
 
-    # create server
-    s = restify.createServer 
-      name: mc.serverName
-      version: mc.version
-
-    # restify directives
-    s.use restify.acceptParser s.acceptable
-    s.use restify.queryParser()
-    s.use restify.bodyParser()
-
-    cb?()
+_tearDown = 
+  server: (cb) ->
+    server.tearDown exports.app, cb
 
 exports.setUp = (cb) ->
 
@@ -62,9 +55,13 @@ exports.setUp = (cb) ->
 exports.tearDown = (cb) ->
 
   exports.app.on "close", (_cb) ->
-    # do some closing tasks if needed
-    _cb?()
+    # pre-appstrap teardown methods
+    async.parallel (_setUp[key] for key of _setUp), (err) ->
+      return cb? err if err?
+      _cb?()
+
   exports.app.close (err) ->
+    # application is fully closed / shutoff
     cb?()
 
 

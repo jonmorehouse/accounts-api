@@ -1,4 +1,3 @@
-#flow-command: /usr/bin/time mocha -R dot --no-exit --compilers coffee:coffee-script/register ~/Documents/programs/accounts-api/test/spec/account_spec.coffee
 t = require 'test-bootstrap'
 account = libRequire 'account'
 should = require 'should'
