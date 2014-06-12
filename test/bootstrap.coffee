@@ -1,40 +1,53 @@
 t = require 'test-bootstrap'
 b = libRequire 'bootstrap'
-{app} = libRequire 'bootstrap'
 account = libRequire 'account'
 async = require 'async'
 should = require 'should'
 
-clearDatabase = (cb) ->
-  async.parallel [
-    ((cb) ->
-      app.postgres.query account.table.drop().ifExists().toQuery().text, (err, res) ->
-        cb? err if err?
-        cb?()
-    ),((cb) ->
-      app.redis.send_command "flushall", [], cb
-    )
-  ], (err) ->
+# call each method of an object
+objCaller = (obj, cb) ->
+  async.parallel (obj[key] for key of obj), (err) ->
+    return cb? err if err?
     cb?()
 
-seedDatabase = (cb) ->
+_setUpEach = 
+  postgres: (cb) ->
+    # create tables for test
+    b.app.postgres.query account.table.create().ifNotExists().toQuery().text, (err, res) -> 
+      should.not.exist err
+      should.exist res
+      cb?()
 
-  # create tables for test
-  app.postgres.query account.table.create().ifNotExists().toQuery().text, (err, res) -> 
-    should.not.exist err
-    should.exist res
+# declare a bunch of methods
+_setUp = 
+  app: (cb) ->
+    b.setUp (err, _app) ->
+      should.not.exist err
+      should.exist _app
+      cb?()
+
+  client: (cb) ->
     cb?()
 
-before (cb) ->
-  b.setUp (err, _app) ->
-    should.not.exist err
-    should.exist _app
-    cb?()
+_tearDown = 
+  app: (cb) ->
+    b.tearDown (err) ->
+      should.not.exist err
+      cb?()
 
-after (cb) ->
-  b.tearDown (err) ->
-    cb?()
+_tearDownEach =
 
-beforeEach seedDatabase
-afterEach clearDatabase
+  postgres: (cb) ->
+    b.app.postgres.query account.table.drop().ifExists().toQuery().text, (err, res) ->
+      cb? err if err?
+      cb?()
+
+  redis: (cb) ->
+    b.app.redis.send_command "flushall", [], cb
+
+# map mocha hooks to the correct methods
+before ((cb) -> objCaller _setUp, cb)
+after ((cb) -> objCaller _tearDown, cb)
+beforeEach ((cb) -> objCaller _setUpEach, cb)
+afterEach ((cb) -> objCaller _tearDownEach, cb)
 
