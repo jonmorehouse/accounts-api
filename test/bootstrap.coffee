@@ -22,8 +22,12 @@ _setUpEach =
       should.exist res
       cb?()
 
-# declare a bunch of methods
 _setUp = 
+
+  env: (cb) ->
+    mc.ENV = "test"
+    cb?()
+
   app: (cb) ->
     b.setUp (err, _app) ->
       should.not.exist err

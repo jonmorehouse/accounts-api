@@ -1,14 +1,25 @@
 t = require 'test-bootstrap'
+ch = require 'charlatan'
 
 describe "AccountController", ->
 
-  describe "post account/", ->
+  before (cb) =>
+
+    @kw = 
+      username: ch.Internet.userName()
+      password: ch.Internet.password()
+
+    cb?()
+
+
+  describe "post account/", =>
 
     it "should create a new account", (cb) =>
+      t.client.post "/account", @kw, (err, req, res, obj) =>
 
-      t.client.get "/", (err, req, res, obj) =>
-        p obj
         cb?()
+
+
 
 
 
