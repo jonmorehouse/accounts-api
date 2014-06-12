@@ -4,7 +4,7 @@ extend = require 'extend'
 bcrypt = require 'bcrypt'
 async = require 'async'
 sql = require 'sql'
-t = require 'test-bootstrap'
+restify = require 'restify'
 
 # application wide variables
 exports.app = {}
@@ -22,6 +22,20 @@ _setUp =
   sql: (cb) ->
 
     sql.registerFunctions ["uuid_generate_v4", "now"]
+    cb?()
+
+  server: (cb) ->
+
+    # create server
+    s = restify.createServer 
+      name: mc.serverName
+      version: mc.version
+
+    # restify directives
+    s.use restify.acceptParser s.acceptable
+    s.use restify.queryParser()
+    s.use restify.bodyParser()
+
     cb?()
 
 exports.setUp = (cb) ->

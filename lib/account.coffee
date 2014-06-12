@@ -1,11 +1,9 @@
-t = require 'test-bootstrap'
-require "./bootstrap"
-bs = require "./bootstrap"
 sql = require 'sql'
 async = require 'async'
 v = require 'validator'
 mc = require 'multi-config'
 bcrypt = require 'bcrypt'
+bs = require "./bootstrap"
 
 # declare table for accounts
 table = sql.Table.define
