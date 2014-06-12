@@ -1,12 +1,12 @@
 restify = require 'restify'
 mc = require 'multi-config'
+b = require "./bootstrap"
 
 exports.setUp = (app, cb) ->
 
-  return cb?()
   # create server
   s = restify.createServer 
-    name: mc.serverName
+    name: mc.name
     version: mc.version
 
   # restify directives
@@ -14,17 +14,15 @@ exports.setUp = (app, cb) ->
   s.use restify.queryParser()
   s.use restify.bodyParser()
   
-  # require controllers
-  #require "./account_controller"
+  b.app.server = s
+  require "./account_controller"
 
   # listen on server port and link up with global application
   s.listen mc.httpPort, =>
-    app.server = s
     return cb?()
 
 exports.tearDown = (app, cb) ->
 
-  return cb?()
   app.server.close (err) ->
     return cb? err if err?
     cb?()

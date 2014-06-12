@@ -1,11 +1,15 @@
-bs = require "./bootstrap"
+{app} = require "./bootstrap"
 
-bs.server.get "account", (req, res, cb) ->
+app.server.get "/", (req, res, cb) ->
 
-  req.query ?= {}
-  p req.query
+  cb?()
 
-bs.server.post "signup", (req, res, cb) ->
+app.server.get "account", (req, res, cb) ->
+
+  #req.query ?= {}
+  #p req.query
+
+app.server.post "signup", (req, res, cb) ->
 
 
 

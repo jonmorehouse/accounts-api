@@ -26,7 +26,12 @@ _setUp =
       should.exist _app
       cb?()
 
-  client: (cb) ->
+  testClient: (cb) ->
+
+    t.client = restify.createJsonClient 
+      url: "#{mc.httpHost}:#{mc.httpPort}"
+      version: mc.version
+    
     cb?()
 
 _tearDown = 
