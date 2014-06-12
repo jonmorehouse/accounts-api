@@ -8,7 +8,7 @@ Set up environment
 $ export DOCKER_HOST=tcp://172.16.42.43:4243
 
 # export host that docker containers listen on
-$ export CONTAINER_HOST=$(echo $DOCKER_HOST | sed 's|"tcp://"||g' | sed 's|":.*$"||g')
+$ export CONTAINER_HOST=$(echo $DOCKER_HOST | sed 's|^.*://||g' | sed 's|:.*$||g')
 
 # export etcd connection information
 $ export ETCD_HOST=$CONTAINER_HOST
