@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 if [[ -z $BEAM_CONFIG ]];then
   echo "Beam config not cloned and path exported" 
   exit 1
@@ -8,7 +8,7 @@ if [[ -z $DOCKER_ETCD ]];then
   echo "Docker etcd not cloned and path not exported"
 fi
 
-#$DOCKER_ETCD/bin/detcd -k $BEAM_CONFIG/accounts_service.cson
+python $DOCKER_ETCD/bin/detcd $BEAM_CONFIG/accounts_service.cson
 
 # this will assume that you manage docker-etcd yourself
 # startup postgresql box
