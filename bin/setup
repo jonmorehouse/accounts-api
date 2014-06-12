@@ -8,7 +8,8 @@ if [[ -z $DOCKER_ETCD ]];then
   echo "Docker etcd not cloned and path not exported"
 fi
 
-python $DOCKER_ETCD/bin/detcd $BEAM_CONFIG/accounts_service.cson
+python $DOCKER_ETCD/bin/detcd 
+etcd-seed $BEAM_CONFIG/accounts_service.cson
 
 # this will assume that you manage docker-etcd yourself
 # startup postgresql box

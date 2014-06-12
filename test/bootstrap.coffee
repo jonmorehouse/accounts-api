@@ -1,8 +1,10 @@
 t = require 'test-bootstrap'
-b = libRequire 'bootstrap'
-account = libRequire 'account'
 async = require 'async'
 should = require 'should'
+restify = require 'restify'
+b = libRequire 'bootstrap'
+account = libRequire 'account'
+mc = require 'multi-config'
 
 # call each method of an object
 objCaller = (obj, cb) ->
