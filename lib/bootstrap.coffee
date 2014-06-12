@@ -44,7 +44,6 @@ exports.setUp = (cb) ->
 
         # handle results
         cb? err if err
-      
         # merge the _app to the normal app to allow for cleaner, easier and guaranteed expected requires
         extend true, exports.app, _app
 
@@ -56,7 +55,7 @@ exports.tearDown = (cb) ->
 
   exports.app.on "close", (_cb) ->
     # pre-appstrap teardown methods
-    async.parallel (_setUp[key] for key of _setUp), (err) ->
+    async.parallel (_tearDown[key] for key of _tearDown), (err) ->
       return cb? err if err?
       _cb?()
 

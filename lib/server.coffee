@@ -3,8 +3,6 @@ mc = require 'multi-config'
 
 exports.setUp = (app, cb) ->
 
-  return cb?()
-
   # create server
   s = restify.createServer 
     name: mc.serverName
@@ -16,8 +14,14 @@ exports.setUp = (app, cb) ->
   s.use restify.bodyParser()
   
   # require controllers
+  #require "./account_controller"
+  s.listen mc.httpPort, =>
+    app.server = s
+    return cb?()
 
 exports.tearDown = (app, cb) ->
 
-  return cb?()
+  app.server.close (err) ->
+    return cb? err if err?
+    cb?()
 
