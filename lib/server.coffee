@@ -14,7 +14,9 @@ exports.setUp = (app, cb) ->
   s.use restify.bodyParser()
   
   # require controllers
-  #require "./account_controller"
+  require "./account_controller"
+
+  # listen on server port and link up with global application
   s.listen mc.httpPort, =>
     app.server = s
     return cb?()

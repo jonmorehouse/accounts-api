@@ -6,7 +6,6 @@ async = require 'async'
 should = require 'should'
 
 clearDatabase = (cb) ->
-
   async.parallel [
     ((cb) ->
       app.postgres.query account.table.drop().ifExists().toQuery().text, (err, res) ->
