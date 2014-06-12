@@ -1,15 +1,16 @@
 t = require 'test-bootstrap'
 
+t = ->
+
 describe "AccountController", ->
 
-  before (cb) =>
+  describe "post account/", ->
 
-    cb?()
+    it "should create a new account", (cb) ->
 
+      t.client.get "/", (err, req, res, obj) =>
 
-  after (cb) =>
-
-    cb?()
+        cb?()
 
 
 

@@ -1,5 +1,5 @@
-Appstrap = require 'appstrap'
 mc = require 'multi-config'
+Appstrap = require 'appstrap'
 extend = require 'extend'
 bcrypt = require 'bcrypt'
 async = require 'async'

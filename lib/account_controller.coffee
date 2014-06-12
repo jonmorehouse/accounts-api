@@ -2,14 +2,16 @@
 
 app.server.get "/", (req, res, cb) ->
 
+  res.send name: "jon"
+  res.end()
   cb?()
 
-app.server.get "account", (req, res, cb) ->
+#app.server.get "account", (req, res, cb) ->
 
-  #req.query ?= {}
-  #p req.query
+  ##req.query ?= {}
+  ##p req.query
 
-app.server.post "signup", (req, res, cb) ->
+#app.server.post "signup", (req, res, cb) ->
 
 
 
