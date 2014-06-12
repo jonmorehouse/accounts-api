@@ -1,28 +1,11 @@
 #!/usr/bin/env coffee
 # vim: set ft=coffee:
-r = require 'restify'
+b = require "../lib/bootstrap"
 
-s = r.createServer
-  name: "name"
-  version: "1.0.0"
+b.setUp (err, _app) ->
 
-s.use r.acceptParser s.acceptable
-s.use r.queryParser()
-s.use r.bodyParser()
-
-s.get "/", (req, res, cb) ->
-
-  res.send "ASDF"
-
-  cb?()
-
-
-s.listen 8080, ->
-
-  console.log "listening..."
-
-
-
+  p "listening"
+  
 
 
 
