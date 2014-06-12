@@ -35,7 +35,6 @@ describe "Account", ->
           should.exist acc.emailAddress
           should.exist acc.signupDate
           should.exist acc.loginDate
-          p acc
           cb?()
 
   describe "authentication", =>

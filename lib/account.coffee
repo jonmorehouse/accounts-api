@@ -25,6 +25,7 @@ table = sql.Table.define
       name: "encrypted_password"
       dataType: "varchar(255)"
       property: "encryptedPassword"
+      private: false
     },
     {
       name: "username"
@@ -41,7 +42,6 @@ table = sql.Table.define
       property: "loginDate"
     }
   ]
-
 
 class Account
 
@@ -87,7 +87,9 @@ class Account
 
   @find: (kw, cb) ->
 
-    query = table.select(table.star()).from(table)
+    # set up query
+    publicColumns = (column for column in table.columns when not column.private?)
+    query = table.select(publicColumns...).from(table)
     orRequired = false
 
     # loop through keys we can find on
