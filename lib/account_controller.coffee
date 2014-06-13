@@ -4,23 +4,24 @@
 app.server.get "/account", (req, res, cb) ->
 
   if req.userId?
-    p "do something"
+    true
   else if req.query?
-    p "do something else"
+    true
 
   res.send key: "value"
   cb?()
 
-#app.server.get "account", (req, res, cb) ->
+app.server.post "/account", (req, res, cb) ->
 
-  ##req.query ?= {}
-  ##p req.query
+  Account.create req.params, (err, acc) ->
 
-app.server.post "account", (req, res, cb) ->
+    if err? or not acc?
+      res.send 400, err if err? 
+    else
+      res.send 201, acc
 
-  p req.params
-  res.send key: "value"
-  cb?()
+    res.end()
+    cb?()
 
 
 

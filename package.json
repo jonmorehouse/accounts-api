@@ -38,6 +38,7 @@
     "jasmine-node": "~1.14.3",
     "mocha": "^1.20.1",
     "should": "^4.0.4",
-    "test-bootstrap": "jonmorehouse/node-test-bootstrap"
+    "test-bootstrap": "jonmorehouse/node-test-bootstrap",
+    "frisby": "latest"
   }
 }
