@@ -13,19 +13,24 @@ etcd-seed $BEAM_CONFIG/accounts_service.cson
 
 # this will assume that you manage docker-etcd yourself
 # startup postgresql box
-docker stop postgresql
-docker rm postgresql
-docker run -d --name="postgresql" \
-  -p 5432:5432 -e USER="test" \
-  -e DB="accounts_service" \
-  -e PASS="test" \
-  -e EXTENSIONS="uuid-ossp" \
+
+for name in "redis" "psql"; do
+  docker stop "$name"
+  docker rm "$name"
+done
+
+docker run -d \
+  --name="psql" \
+  -p 5432:5432 \
+  -e "USER=test" \
+  -e "EXTENSIONS=uuid-ossp" \
+  -e "PASS=test" \
+  -e "DB=accounts_service" \
   jonmorehouse/postgresql
 
 # start up docker box for development
-docker stop redis
-docker rm redis
-docker run -d --name="redis" \
+docker run -d \
+  --name="redis" \
   -p 6379:6379 \
   dockerfile/redis
 
