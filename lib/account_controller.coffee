@@ -3,13 +3,20 @@
 
 app.server.get "/account", (req, res, cb) ->
 
-  if req.userId?
-    true
-  else if req.query?
-    true
+  if not req.query? and req.userId?
+    return cb new Error "Unauthenticated user"
 
-  res.send key: "value"
-  cb?()
+  # generate args to pass and find the account
+  args = if (key for key of req.query).length > 0 then req.query else {id: req.userId}
+
+  # grab the account
+  Account.find args, (err, acc) ->
+    
+    if err? then res.send 400, err
+    else
+      res.send 200, acc
+    # call next step in server
+    cb?()
 
 app.server.post "/account", (req, res, cb) ->
 

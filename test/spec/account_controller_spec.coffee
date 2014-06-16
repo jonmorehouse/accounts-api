@@ -1,6 +1,7 @@
 t = require 'test-bootstrap'
 ch = require 'charlatan'
 should = require 'should'
+async = require 'async'
 {Account} = libRequire "account"
 
 getKw = ->
@@ -55,14 +56,29 @@ describe "AccountController", ->
     beforeEach (cb) =>
       @kw = getKw()
       Account.create @kw, (err, acc) =>
-        #should.not.exist err
-        #should.existd acc
-        #@acc = acc 
+        should.not.exist err
+        should.exist acc
+        @acc = acc 
         cb?()
 
     it "should return 200 for a username lookup", (cb) =>
-      
-      cb?()
 
+      queryKeys = ["username", "emailAddress", "id"]
+
+      _ = (key, cb) =>
+        t.client.get "/account?username=#{@acc[key]}", (err, req, res, obj) =>
+
+          should.not.exist err
+          should.exist obj
+
+          # loop through all queryable keys
+          for key in queryKeys
+            should.exist obj[key]
+            should.equal obj[key], @acc[key]
+
+          cb?()
+
+      # now look up account as needed
+      async.each queryKeys, _, cb
 
 
