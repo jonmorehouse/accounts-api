@@ -13,11 +13,13 @@ table = sql.Table.define
       name: "client_id"
       primaryKey: true
       dataType: "uuid"
+      property: "clientId"
     },
     {
       name: "client_secret"
       dataType: "uuid"
       required: true
+      property: "clientSecret"
     }
   ]
 
@@ -27,12 +29,11 @@ class Client
   constructor: (cb) ->
 
   @create: (cb) =>
-    @_create (err, acc) =>
+    @_create (err, client) =>
       cb? err if err?
-      return cb err, acc
       @_redisEntry client, (err) =>
         cb? err if err?
-        cb null, acc
+        cb null, client
     
   @authenticate: (clientId, clientSecret) =>
 
@@ -55,8 +56,11 @@ class Client
       cb? null, res.rows[0]
 
   @_redisEntry: (client, cb) =>
-
-    cb?()
+    
+    # insert client into redis set
+    bs.app.redis.hset setKey, client.clientId, client.clientSecret, (err) ->
+    
+      cb?()
 
 
 module.exports = 
