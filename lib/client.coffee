@@ -29,7 +29,7 @@ class Client
   @create: (cb) =>
     @_create (err, client) =>
       cb? err if err?
-      @_redisEntry client, (err) =>
+      @_hashEntry client, (err) =>
         cb? err if err?
         cb null, client
     
@@ -65,7 +65,7 @@ class Client
       cb? err if err?
       cb? null, res.rows[0]
 
-  @_redisEntry: (client, cb) =>
+  @_hashEntry: (client, cb) =>
     # insert client into redis set
     bs.app.redis.hset setKey, client.clientId, client.clientSecret, (err) ->
       cb? err if err?

@@ -57,9 +57,11 @@ _tearDown =
 _tearDownEach =
 
   postgres: (cb) ->
-    b.app.postgres.query account.table.drop().ifExists().toQuery().text, (err, res) ->
-      cb? err if err?
-      cb?()
+    _ = (table, cb) ->
+      b.app.postgres.query table.drop().ifExists().toQuery(), (err, res) ->
+        cb? err if err?
+        cb?()
+    async.each [account.table, client.table, token.table], _, (err) ->
 
   redis: (cb) ->
     b.app.redis.send_command "flushall", [], cb

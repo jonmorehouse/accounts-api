@@ -155,7 +155,7 @@ class Account
     # generate text and insert into datbase
     query = table.insert(obj).returning(publicColumns...).toQuery()
     bs.app.postgres.query query, (err, res) ->
-      cb? err if err?
+      return cb? err if err?
       cb? null, res.rows[0]
 
 module.exports =

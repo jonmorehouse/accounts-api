@@ -1,6 +1,11 @@
 # Accounts API
 > Account creation and management for beam
 
+## Overview
+
+
+
+
 ## Hacking
 
 Set up environment
@@ -44,11 +49,5 @@ $ npm install
 $ cake tests
 ~~~
 
-## Thoughts on Accounts
-
-> Account object holds registration items and universal identifiers. Things such as phone numbers and social networks are not account-unique.
-
-* usernames can not change, and are required for signup
-* email addresses can change, but are required for signup so they are a part of the account
 
 
