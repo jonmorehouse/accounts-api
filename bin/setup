@@ -13,7 +13,6 @@ etcd-seed $BEAM_CONFIG/accounts_service.cson
 
 # this will assume that you manage docker-etcd yourself
 # startup postgresql box
-
 for name in "redis" "psql"; do
   docker stop "$name"
   docker rm "$name"
