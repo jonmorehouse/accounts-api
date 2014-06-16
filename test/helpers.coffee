@@ -13,7 +13,6 @@ _getKw = ->
 exports.createAccount = (cb) =>
   kw = _getKw()
   Account.create kw, (err, account) =>
-    p err
     account.password = kw.password
     cb? account
 

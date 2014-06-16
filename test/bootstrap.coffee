@@ -62,6 +62,8 @@ _tearDownEach =
         cb? err if err?
         cb?()
     async.each [account.table, client.table, token.table], _, (err) ->
+      cb? err if err
+      cb?()
 
   redis: (cb) ->
     b.app.redis.send_command "flushall", [], cb
