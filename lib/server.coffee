@@ -1,4 +1,5 @@
 restify = require 'restify'
+oauth2 = require 'restify-oauth2'
 mc = require 'multi-config'
 b = require "./bootstrap"
 sockets = []
@@ -15,7 +16,10 @@ exports.setUp = (app, cb) ->
   s.use restify.queryParser mapParams: false
   s.use restify.bodyParser mapParams: true
   s.use restify.authorizationParser()
-  
+
+  # set up oauth
+  oauth2.ropc s, {tokenEndpoint: "token", hooks: require "./hooks"}
+
   # link server to application
   b.app.server = s
   require "./account_controller"
