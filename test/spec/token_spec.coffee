@@ -2,21 +2,22 @@ t = require 'test-bootstrap'
 should = require 'should'
 bs = libRequire "bootstrap"
 h = testRequire "helpers"
+{Token} = libRequire "token"
 
 #[Token,table,setKey] = libRequire 'token'
 describe "Token", ->
 
   beforeEach (cb) =>
-    h.createAccount (@account) =>
+    h.tokenRequestKw (@kw) =>
       cb?()
 
-  describe "create new token", =>
+  describe "create tokens", =>
 
-    it "should return a new token", (cb) =>
-
-      p @account
-
-      cb?()
+    it "should create a token when an account is passed to Token.createFromAccount", (cb) =>
+      Token.create @kw, (err, token) =>
+        should.not.exist err
+        should.exist token
+        cb?()
 
 
    

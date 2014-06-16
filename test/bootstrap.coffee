@@ -6,6 +6,7 @@ restify = require 'restify'
 b = libRequire 'bootstrap'
 account = libRequire 'account'
 client = libRequire 'client'
+token = libRequire 'token'
 
 # call each method of an object
 objCaller = (obj, args...) ->
@@ -24,7 +25,7 @@ _setUpEach =
         cb?()
 
     # create tables for test
-    async.each [account.table, client.table], _, (err) ->
+    async.each [account.table, client.table, token.table], _, (err) ->
       cb?()
 
 _setUp = 

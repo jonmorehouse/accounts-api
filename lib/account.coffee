@@ -40,19 +40,20 @@ table = sql.Table.define
       property: "loginDate"
     }
   ]
+publicColumns = (column for column in table.columns when not column.private?)
 
 class Account
 
   @authenticate: (kw, cb) =>
 
-    if not kw.password? and not kw.username? or not kw.emailAddress? 
-      return new Error "Missing parameters"
+    if not kw.password? or not kw.username? and not kw.emailAddress? 
+      return cb? new Error "Missing parameters"
 
     @_hashPassword kw.password, (err, hash) =>
       return cb? err if err
     
       key = if kw.username? then "username" else if kw.emailAddress? then "emailAddress"
-      query = table.where(table[key].equals(kw[key])).and(table.encryptedPassword.equals(hash)).toQuery()
+      query = table.select(publicColumns...).where(table[key].equals(kw[key])).and(table.encryptedPassword.equals(hash)).toQuery()
 
       # make proper query and return to the caller
       bs.app.postgres.query query, (err, res) ->
@@ -86,7 +87,6 @@ class Account
   @find: (kw, cb) ->
 
     # set up query
-    publicColumns = (column for column in table.columns when not column.private?)
     query = table.select(publicColumns...).from(table)
     orRequired = false
 
@@ -124,7 +124,6 @@ class Account
     cb?()
 
   @_validateUsername: (username, cb) ->
-    
     re = /^[a-z,A-Z,\.\'-_]*$/
     if not v.isLength username, 1, 100
       return cb new Error "Invalid username length"
@@ -137,7 +136,6 @@ class Account
   @_hashPassword: (password, cb) ->
 
     bcrypt.hash password, bs.app.bcryptSalt, (err, hash) ->
-
       return cb? err if err
       cb null, hash
 
@@ -155,7 +153,7 @@ class Account
       )(column)
 
     # generate text and insert into datbase
-    query = table.insert(obj).returning(table.star()).toQuery()
+    query = table.insert(obj).returning(publicColumns...).toQuery()
     bs.app.postgres.query query, (err, res) ->
       cb? err if err?
       cb? null, res.rows[0]

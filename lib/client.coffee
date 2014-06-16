@@ -7,7 +7,7 @@ bs = require "./bootstrap"
 setKey = "client"
 
 table = sql.Table.define
-  name: "client_credentials"
+  name: "client_credential"
   columns: [
     {
       name: "client_id"
