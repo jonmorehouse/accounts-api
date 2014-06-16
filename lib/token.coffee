@@ -66,7 +66,30 @@ class Token
         authenticated: true
 
   @delete: (token, cb) ->
-    # delete the 
+
+    token = if typeof token is "object" then token.token else token
+    # remove redis hash
+    bs.app.redis.hdel setKey, token, (err) =>
+      return cb? err if err?
+
+      obj = 
+        modifiedAt: table.sql.functions.now()
+        expired: true
+
+      p err
+      p obj
+
+      # build query
+      query = table.update({}).toQuery()
+
+      p query.text
+
+      return cb?()
+        
+      # execute query against datastore
+      bs.app.postgres.query query, (err, res) ->
+        return cb? err if err?
+        return cb? null, res.rows[0]
 
   @_createToken: (account, cb) ->
 
