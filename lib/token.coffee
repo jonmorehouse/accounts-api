@@ -65,9 +65,10 @@ class Token
         accountId: res
         authenticated: true
 
-  @delete: (token, cb) ->
+  @delete: (kw, cb) ->
 
-    token = if typeof token is "object" then token.token else token
+    token = if typeof kw is "object" then kw .token else kw
+
     # remove redis hash
     bs.app.redis.hdel setKey, token, (err) =>
       return cb? err if err?
@@ -76,16 +77,9 @@ class Token
         modifiedAt: table.sql.functions.now()
         expired: true
 
-      p err
-      p obj
+      # build out query for updating token row as needed as well
+      query = table.where(table.token.equals(token)).update(obj).returning(table.star()).toQuery()
 
-      # build query
-      query = table.update({}).toQuery()
-
-      p query.text
-
-      return cb?()
-        
       # execute query against datastore
       bs.app.postgres.query query, (err, res) ->
         return cb? err if err?

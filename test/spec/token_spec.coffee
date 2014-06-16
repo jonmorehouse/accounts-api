@@ -43,23 +43,25 @@ describe "Token", ->
 
         cb?()
    
-  #describe "delete token", =>
+  describe "delete token", =>
 
-    #beforeEach (cb) =>
-      #Token.create @kw, (err, @token) =>
-        #should.not.exist err
-        #should.exist @token
-        #cb?()
+    beforeEach (cb) =>
+      Token.create @kw, (err, @token) =>
+        should.not.exist err
+        should.exist @token
+        cb?()
 
-    #it "should remove token from redis and update datastore", (cb) =>
+    it "should remove token from redis and update datastore", (cb) =>
 
-      #Token.delete @token, (err, token) =>
-        #should.not.exist err
-        #should.exist token
-        #should.exist token.modifiedAt
-        #p token
+      Token.delete @token, (err, res) =>
 
-        #cb?()
+        should.not.exist err
+        should.exist res
+        should.exist res.modifiedAt
+        should.exist res.expired
+        should.equal res.expired, true
+
+        cb?()
 
 
 
