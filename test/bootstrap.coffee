@@ -5,6 +5,7 @@ should = require 'should'
 restify = require 'restify'
 b = libRequire 'bootstrap'
 account = libRequire 'account'
+client = libRequire 'client'
 
 # call each method of an object
 objCaller = (obj, args...) ->
@@ -16,10 +17,14 @@ objCaller = (obj, args...) ->
 
 _setUpEach = 
   postgres: (cb) ->
+    _ = (table, cb) ->
+      b.app.postgres.query table.create().ifNotExists().toQuery().text, (err, res) -> 
+        should.not.exist err
+        should.exist res
+        cb?()
+
     # create tables for test
-    b.app.postgres.query account.table.create().ifNotExists().toQuery().text, (err, res) -> 
-      should.not.exist err
-      should.exist res
+    async.each [account.table, client.table], _, (err) ->
       cb?()
 
 _setUp = 
