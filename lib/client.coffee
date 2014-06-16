@@ -26,8 +26,6 @@ table = sql.Table.define
 
 class Client 
 
-  constructor: (cb) ->
-
   @create: (cb) =>
     @_create (err, client) =>
       cb? err if err?
@@ -35,13 +33,25 @@ class Client
         cb? err if err?
         cb null, client
     
-  @authenticate: (clientId, clientSecret) =>
+  @authenticate: (kw, cb) =>
 
     # authenticate the client ... make sure the account exists etc
     # check if key exists
+    if not kw.clientId? or not kw.clientSecret?
+      return cb new Error "Missing parameters"
+
+    # look up in redis database (ttl will come later to expire these client keys)
+    bs.app.redis.hget setKey, kw.clientId, (err, res) =>
+      return cb? err if err?
+
+      # make sure clientSecret is equal to key
+      if res != kw.clientSecret
+        return cb? new Error("Invalid client secret"), false
+
+      # client id / secret was authenticated
+      return cb null, true
 
   @_create: (cb) =>
-
     # generate insert object
     obj = {}
     for column in (column.property for column in table.columns)
@@ -56,12 +66,10 @@ class Client
       cb? null, res.rows[0]
 
   @_redisEntry: (client, cb) =>
-    
     # insert client into redis set
     bs.app.redis.hset setKey, client.clientId, client.clientSecret, (err) ->
-    
+      cb? err if err?
       cb?()
-
 
 module.exports = 
   table: table
