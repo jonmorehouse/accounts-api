@@ -3,7 +3,6 @@ t = require 'test-bootstrap'
 should = require 'should'
 bs = libRequire "bootstrap"
 
-
 describe "Client", ->
 
   beforeEach (cb) =>
@@ -68,6 +67,4 @@ describe "Client", ->
         should.exist authenticated
         should.equal authenticated, false
         cb?()
-
-
 
