@@ -1,6 +1,5 @@
 restify = require 'restify'
 mc = require 'multi-config'
-oauth = require 'restify-oauth2'
 b = require "./bootstrap"
 sockets = []
 
@@ -13,9 +12,9 @@ exports.setUp = (app, cb) ->
 
   # restify directives
   s.use restify.acceptParser s.acceptable
-  s.use restify.authorizationParser
   s.use restify.queryParser mapParams: false
-  s.use restify.bodyParser mapParams: false
+  s.use restify.bodyParser mapParams: true
+  s.use restify.authorizationParser()
   
   # link server to application
   b.app.server = s
