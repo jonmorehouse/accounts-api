@@ -5,7 +5,6 @@ h = testRequire "helpers"
 sql = require 'sql'
 {Token} = libRequire "token"
 
-#[Token,table,setKey] = libRequire 'token'
 describe "Token", ->
 
   beforeEach (cb) =>
@@ -19,10 +18,6 @@ describe "Token", ->
         should.not.exist err
         should.exist token
         cb?()
-
-    #it "should add a record to the database", (cb) =>
-      #Token.create @kw, (err, token) =>
-        #bs.app 
 
   describe "token authentication", =>
 
@@ -62,7 +57,6 @@ describe "Token", ->
         should.equal res.expired, true
 
         cb?()
-
 
 
 

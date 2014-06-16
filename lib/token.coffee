@@ -40,9 +40,6 @@ table = sql.Table.define
 class Token
 
   @create: (kw, cb) ->
-    Client.authenticate kw, (err, validated) =>
-      return cb? err if err? or not validated
-
       Account.authenticate kw, (err, account) =>
         return cb? err if err? or not account?
 
@@ -86,7 +83,6 @@ class Token
         return cb? null, res.rows[0]
 
   @_createToken: (account, cb) ->
-
     obj = 
       accountId: account.id
       token: table.sql.functions.uuid_generate_v4()
